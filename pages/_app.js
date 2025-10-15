@@ -3,6 +3,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from "../firebaseconfig";
 import Login from "../components/Login";
 import '../styles/globals.scss';
+import { ThemeProvider } from "../components/ThemeProvider";
 
 function MyApp({ Component, pageProps }) {
   const [user, loading, error] = useAuthState(auth);
@@ -10,9 +11,11 @@ function MyApp({ Component, pageProps }) {
   if(loading) {
     return (
       <ChakraProvider>
-        <Center h = "100vh">
-          <Spinner size = "xl" />
-        </Center>
+        <ThemeProvider>
+          <Center h = "100vh">
+            <Spinner size = "xl" />
+          </Center>
+        </ThemeProvider>
       </ChakraProvider>
     )
   }
@@ -20,14 +23,18 @@ function MyApp({ Component, pageProps }) {
   if(!user) {
     return (
       <ChakraProvider>
-        <Login />
+        <ThemeProvider>
+          <Login />
+        </ThemeProvider>
       </ChakraProvider>
     )
   }
 
   return (
     <ChakraProvider>
-      <Component {...pageProps} />
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
     </ChakraProvider>
   )
 }

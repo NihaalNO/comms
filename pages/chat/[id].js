@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@chakra-ui/icons"
-import { Avatar, Flex, Heading, IconButton, Input, Button, Text, FormControl, useToast } from "@chakra-ui/react"
+import { Avatar, Flex, Heading, IconButton, Input, Button, Text, FormControl, useToast, useColorModeValue } from "@chakra-ui/react"
 import Sidebar from "../../components/Sidebar"
 import Head from "next/head"
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -10,6 +10,7 @@ import { useCollectionData, useDocumentData } from 'react-firebase-hooks/firesto
 import { collection, orderBy, query, doc, addDoc, serverTimestamp } from "firebase/firestore"
 import getOtherEmail from "../../utils/getOtherEmail";
 import { useState, useRef, useEffect } from "react";
+import { useTheme } from "../../components/ThemeProvider";
 
 const Topbar = ({username}) => {
     const toast = useToast();
@@ -80,12 +81,16 @@ export default function Chat () {
     })
 
     useEffect(() => {
-        setTimeout(
-            scrollToLatestChat.current.scrollIntoView({
+        setTimeout(() => {
+            scrollToLatestChat.current?.scrollIntoView({
                 behavior: "smooth",
                 block: "start"
-            }), 100)
-    ,[messages]})
+            })
+        }, 100)
+    }, [messages])
+
+    // Get theme from context
+    const { darkMode } = useTheme();
 
     return (
         <Flex h = "100vh">
@@ -93,7 +98,7 @@ export default function Chat () {
                 <title>Comms</title>
             </Head>
             <Sidebar/>
-            <Flex flex = {1} direction = "column" onClick={() => getMessages()} bgColor = "ghostwhite">
+            <Flex flex = {1} direction = "column" onClick={() => getMessages()} bgColor = {darkMode ? "gray.900" : "white"}>
                 <Topbar username = {getOtherEmail(chat?.users, user)}/>
                 <Flex flex = {1} direction = "column" pt = {4} px = {4}  overflowY = "auto" sx = {{scrollbarWidth: "none"}}>
                     {getMessages()}

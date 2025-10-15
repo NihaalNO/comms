@@ -10,17 +10,33 @@ import {
   Input,
   ModalFooter,
   Button,
+  Switch,
+  Box,
+  Flex
 } from "@chakra-ui/react";
+import { useState } from "react";
+
 
 function DialogBox({isOpen, onClose, newChat}) {
   
+  // State for theme toggle
+  const [darkMode, setDarkMode] = useState(true);
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={darkMode ? "gray.800" : "white"} color={darkMode ? "white" : "black"} border="1px solid" borderColor={darkMode ? "gray.700" : "gray.300"} >
           <ModalHeader>
-            <ModalCloseButton />
+            <Flex justifyContent="space-between" alignItems="center">
+              <ModalCloseButton />
+              <Switch
+                isChecked={darkMode}
+                onChange={() => setDarkMode(!darkMode)}
+                colorScheme="blue"
+                size="sm"
+              />
+            </Flex>
           </ModalHeader>
 
           <ModalBody>
@@ -36,13 +52,13 @@ function DialogBox({isOpen, onClose, newChat}) {
             >
               <FormControl>
                 <FormLabel>Enter email of the recipient</FormLabel>
-                <Input type="email" />
+                <Input type="email" bg={darkMode ? "gray.700" : "white"} color={darkMode ? "white" : "black"} border="1px solid" borderColor={darkMode ? "gray.600" : "gray.300"} />
               </FormControl>
             </form>
           </ModalBody>
 
           <ModalFooter>
-            <Button type="submit" form="email-form" bg = "blue.50" color = "blue.500" _hover = {{bg: "blue.100", cursor: "pointer"}}>
+            <Button type="submit" form="email-form" bg = {darkMode ? "blue.500" : "blue.100"} color = {darkMode ? "white" : "blue.900"} _hover = {{bg: darkMode ? "blue.600" : "blue.200", cursor: "pointer"}}>
               Submit
             </Button>
           </ModalFooter>
