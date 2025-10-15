@@ -20,8 +20,8 @@ const Sidebar = () => {
     
     // State for sidebar collapse
     const [isCollapsed, setIsCollapsed] = useState(false);
-    // Use theme from context instead of local state
-    const { darkMode, toggleTheme } = useTheme();
+    // Use theme from context
+    const { darkMode, toggleTheme, themeColors } = useTheme();
 
     const redirect = (id) => {
         router.push(`/chat/${id}`);
@@ -32,7 +32,7 @@ const Sidebar = () => {
             chats?.filter(chat => chat.users.includes(user.email))
             .map ( 
                 chat => 
-                    <Flex key = {Math.random()} align = "center" p = {3} _hover = {{bg: darkMode ? "gray.700" : "gray.200", cursor: "pointer"}} 
+                    <Flex key = {Math.random()} align = "center" p = {3} _hover = {{bg: themeColors.sidebarHover, cursor: "pointer"}} 
                     onClick = {() => redirect(chat.id)}>
                         <Avatar src = "" marginEnd = {3} size={isCollapsed ? "sm" : "md"}/>
                         {!isCollapsed && <Text>{getOtherEmail(chat.users, user)}</Text>}
@@ -60,11 +60,11 @@ const Sidebar = () => {
         <Flex 
         h = "100vh"
         borderEnd = "1px solid"
-        borderColor = {darkMode ? "gray.700" : "gray.300"}
+        borderColor = {themeColors.sidebarBorder}
         direction = "column"
         className = "sidebar"
-        bg={darkMode ? "gray.900" : "white"}
-        color={darkMode ? "white" : "black"}
+        bg={themeColors.sidebarBg}
+        color={themeColors.text}
         >
             <Flex 
             w = "100%" h = "81px" 
@@ -94,8 +94,12 @@ const Sidebar = () => {
             </Flex>
 
             {!isCollapsed && (
-                <Button bg = {darkMode ? "blue.500" : "blue.100"} color = {darkMode ? "white" : "blue.900"} m = {5} p = {4} _hover = {{bg: darkMode ? "blue.600" : "blue.200", cursor: "pointer"}}
-                onClick = {() => onOpen()}>
+                <Button 
+                    bg = {themeColors.newChatButtonBg} 
+                    color = {themeColors.newChatButtonColor} 
+                    m = {5} p = {4} 
+                    _hover = {{bg: themeColors.newChatButtonHover, cursor: "pointer"}}
+                    onClick = {() => onOpen()}>
                     New Chat
                 </Button>
             )}
